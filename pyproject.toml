@@ -15,3 +15,8 @@ dependencies = [
 tortoise_orm = "infrastructures.database.TORTOISE_ORM"
 location = "./migrations"
 src_folder = "./src"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3.5",
+]
