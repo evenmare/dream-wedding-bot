@@ -3,10 +3,11 @@ default_language_version:
     python: python3.12
 
 repos:
-  - repo: local
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.11.5
     hooks:
+      - id: ruff-format
       - id: ruff
-        name: ruff
-        entry: uvx ruff check src --fix --show-fixes
-        types: [python]
-        language: system
+        args: [--fix, --show-fixes, --exit-non-zero-on-fix]
+        types_or: [python, pyi]
+        require_serial: true
