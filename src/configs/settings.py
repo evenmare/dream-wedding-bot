@@ -1,4 +1,5 @@
 """Module contains application settings."""
+
 from functools import lru_cache
 from pathlib import Path
 
@@ -39,8 +40,10 @@ class CacheSettings(BaseAppSettings):
     @computed_field
     @property
     def url(self) -> str:
-        return f'redis://{self.CACHE_USER}:{self.CACHE_PASSWORD}@' \
-               f'{self.CACHE_HOST}:{self.CACHE_PORT}/{self.CACHE_NAME}'
+        return (
+            f'redis://{self.CACHE_USER}:{self.CACHE_PASSWORD}@'
+            f'{self.CACHE_HOST}:{self.CACHE_PORT}/{self.CACHE_NAME}'
+        )
 
 
 class DbSettings(BaseAppSettings):
@@ -55,8 +58,10 @@ class DbSettings(BaseAppSettings):
     @computed_field
     @property
     def url(self) -> str:
-        return f'asyncpg://{self.DB_USER}:{self.DB_PASSWORD}@' \
-               f'{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}'
+        return (
+            f'asyncpg://{self.DB_USER}:{self.DB_PASSWORD}@'
+            f'{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}'
+        )
 
 
 @lru_cache
@@ -70,7 +75,7 @@ cache_settings: CacheSettings = get_cache_settings()
 
 @lru_cache
 def get_db_settings() -> DbSettings:
-    """"Retrieve database settings."""
+    """Retrieve database settings."""
     return DbSettings()
 
 

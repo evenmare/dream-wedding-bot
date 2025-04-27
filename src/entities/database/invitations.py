@@ -19,9 +19,9 @@ class InvitationRequest(BaseOrmModel):
     address_specification = fields.TextField(null=True)
 
     guest = fields.OneToOneField(
-        model_name="dream_wedding_bot.Guest",
-        related_name="invitation_request",
+        model_name='dream_wedding_bot.Guest',
+        related_name='invitation_request',
     )
 
     class Meta:
-        table = "invitations_requests"
+        table = 'invitations_requests'

@@ -12,12 +12,14 @@ async def upgrade(db: BaseDBAsyncClient) -> str:
     "patronymic" VARCHAR(32),
     "phone_number" VARCHAR(12) NOT NULL,
     "birth_date" DATE NOT NULL,
+    "gender" VARCHAR(1) NOT NULL,
     "category" VARCHAR(8) NOT NULL,
     "is_resident" BOOL NOT NULL DEFAULT True,
     "is_registration_guest" BOOL NOT NULL DEFAULT False,
     "status" VARCHAR(16)
 );
 CREATE INDEX IF NOT EXISTS "idx_guests_phone_n_10f71e" ON "guests" ("phone_number");
+COMMENT ON COLUMN "guests"."gender" IS 'FEMALE: F\nMALE: M';
 COMMENT ON COLUMN "guests"."category" IS 'RELATIVE: relative\nFRIEND: friend\nWITNESS: witness';
 COMMENT ON COLUMN "guests"."status" IS 'INVITED: invited\nAWAITING_ANSWER: awaiting_answer\nDECLINED: declined\nCONFIRMED: confirmed';
 COMMENT ON TABLE "guests" IS 'Guest model.';

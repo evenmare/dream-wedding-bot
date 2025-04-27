@@ -18,9 +18,9 @@ class TelegramUser(BaseOrmModel):
     )
 
     guest = fields.OneToOneField(
-        model_name="dream_wedding_bot.Guest",
-        related_name="telegram_user",
+        model_name='dream_wedding_bot.Guest',
+        related_name='telegram_user',
     )
 
     class Meta:
-        table = "telegram_users"
+        table = 'telegram_users'

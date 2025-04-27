@@ -4,7 +4,7 @@ from tortoise import fields
 from tortoise.validators import MinLengthValidator
 
 from entities.database.base import BaseOrmModel
-from entities.enums.guests import GuestCategoryEnum, GuestStatusEnum
+from entities.enums.guests import GuestCategoryEnum, GuestStatusEnum, GuestGenderEnum
 
 
 class Guest(BaseOrmModel):
@@ -31,6 +31,10 @@ class Guest(BaseOrmModel):
         db_index=True,
     )
     birth_date = fields.DateField()
+    gender = fields.CharEnumField(
+        GuestGenderEnum,
+        max_length=1,
+    )
 
     category = fields.CharEnumField(
         GuestCategoryEnum,
@@ -52,4 +56,4 @@ class Guest(BaseOrmModel):
     )
 
     class Meta:
-        table = "guests"
+        table = 'guests'

@@ -1,4 +1,5 @@
 """Module contains base ORM model implementation."""
+
 from tortoise import models, fields
 
 
