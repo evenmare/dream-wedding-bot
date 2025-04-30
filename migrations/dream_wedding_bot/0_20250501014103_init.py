@@ -4,9 +4,9 @@ from tortoise import BaseDBAsyncClient
 async def upgrade(db: BaseDBAsyncClient) -> str:
     return """
         CREATE TABLE IF NOT EXISTS "guests" (
-    "id" SERIAL NOT NULL PRIMARY KEY,
     "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "guest_id" SERIAL NOT NULL PRIMARY KEY,
     "first_name" VARCHAR(16) NOT NULL,
     "last_name" VARCHAR(32) NOT NULL,
     "patronymic" VARCHAR(32),
@@ -15,31 +15,34 @@ async def upgrade(db: BaseDBAsyncClient) -> str:
     "gender" VARCHAR(1) NOT NULL,
     "category" VARCHAR(8) NOT NULL,
     "is_resident" BOOL NOT NULL DEFAULT True,
-    "is_registration_guest" BOOL NOT NULL DEFAULT False,
-    "status" VARCHAR(16)
+    "is_registration_guest" BOOL NOT NULL DEFAULT False
 );
 CREATE INDEX IF NOT EXISTS "idx_guests_phone_n_10f71e" ON "guests" ("phone_number");
 COMMENT ON COLUMN "guests"."gender" IS 'FEMALE: F\nMALE: M';
 COMMENT ON COLUMN "guests"."category" IS 'RELATIVE: relative\nFRIEND: friend\nWITNESS: witness';
-COMMENT ON COLUMN "guests"."status" IS 'INVITED: invited\nAWAITING_ANSWER: awaiting_answer\nDECLINED: declined\nCONFIRMED: confirmed';
 COMMENT ON TABLE "guests" IS 'Guest model.';
-CREATE TABLE IF NOT EXISTS "invitations_requests" (
-    "id" SERIAL NOT NULL PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS "guests_forms" (
     "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "stage" VARCHAR(32) NOT NULL,
-    "address" TEXT,
-    "address_specification" TEXT,
-    "guest_id" INT NOT NULL UNIQUE REFERENCES "guests" ("id") ON DELETE CASCADE
+    "guest_id" INT NOT NULL PRIMARY KEY REFERENCES "guests" ("guest_id") ON DELETE RESTRICT
 );
-COMMENT ON COLUMN "invitations_requests"."stage" IS 'ASKED: asked\nREJECTED: rejected\nADDRESS_INPUT: address_input\nGEOTAG_VALIDATION: geotag_validation\nADDRESS_TEXT_INPUT: address_text_input\nINFO_SPECIFICATION: info_specification\nVALIDATION: validation\nCOMPLETED: completed';
-COMMENT ON TABLE "invitations_requests" IS 'Invitation request model.';
-CREATE TABLE IF NOT EXISTS "telegram_users" (
-    "id" INT NOT NULL PRIMARY KEY,
+COMMENT ON COLUMN "guests_forms"."stage" IS 'INVITED: invited\nAWAITING_ANSWER: awaiting_answer\nDECLINED: declined\nCONFIRMED: confirmed\nINVITATION_NEEDINESS_ASKED: invitation_neediness_asked\nINVITATION_ADDRESS_INPUT: invitation_address_input\nINVITATION_GEOTAG_VALIDATION: invitation_geotag_validation\nINVITATION_ADDRESS_TEXT_INPUT: invitation_address_text_input\nINVITATION_INFO_SPECIFICATION: invitation_info_specification\nINVITATION_INFO_VALIDATION: invitation_info_validation\nCOMPLETED: completed';
+COMMENT ON TABLE "guests_forms" IS 'Guest form information.';
+CREATE TABLE IF NOT EXISTS "invitations_requests" (
     "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "address" TEXT,
+    "address_specification" TEXT,
+    "guest_id" INT NOT NULL PRIMARY KEY REFERENCES "guests" ("guest_id") ON DELETE RESTRICT
+);
+COMMENT ON TABLE "invitations_requests" IS 'Invitation request model.';
+CREATE TABLE IF NOT EXISTS "telegram_users" (
+    "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "user_id" INT NOT NULL PRIMARY KEY,
     "username" VARCHAR(64),
-    "guest_id" INT NOT NULL UNIQUE REFERENCES "guests" ("id") ON DELETE CASCADE
+    "guest_id" INT NOT NULL UNIQUE REFERENCES "guests" ("guest_id") ON DELETE CASCADE
 );
 COMMENT ON TABLE "telegram_users" IS 'Telegram user model.';
 CREATE TABLE IF NOT EXISTS "aerich" (

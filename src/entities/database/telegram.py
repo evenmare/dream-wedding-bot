@@ -8,7 +8,7 @@ from entities.database.base import BaseOrmModel
 class TelegramUser(BaseOrmModel):
     """Telegram user model."""
 
-    id = fields.IntField(
+    user_id = fields.IntField(
         primary_key=True,
         generated=False,
     )
@@ -20,6 +20,8 @@ class TelegramUser(BaseOrmModel):
     guest = fields.OneToOneField(
         model_name='dream_wedding_bot.Guest',
         related_name='telegram_user',
+        on_delete=fields.OnDelete.CASCADE,
+        null=False,
     )
 
     class Meta:

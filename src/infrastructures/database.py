@@ -12,6 +12,7 @@ TORTOISE_ORM = {
         'dream_wedding_bot': {
             'models': [
                 'entities.database.guests',
+                'entities.database.forms',
                 'entities.database.invitations',
                 'entities.database.telegram',
                 'aerich.models',

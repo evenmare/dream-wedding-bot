@@ -1,50 +1,36 @@
 """Module contains repository for guests access."""
 
 from entities.database.guests import Guest
-from entities.enums.guests import GuestStatusEnum
 from entities.schemas.guests import GuestSchema
 from repositories.database.base import BaseDatabaseRepository
 
-__all__ = ('GuestsRepository',)
+__all__ = ('GuestRepository',)
 
 
-class GuestsRepository(BaseDatabaseRepository[Guest, GuestSchema]):
+class GuestRepository(BaseDatabaseRepository[Guest, GuestSchema]):
     """Class implements repository for guests entity operations."""
 
     schema = GuestSchema
-    __model = Guest
+    _model = Guest
 
-    async def get_by_chat_id(self, chat_id: int) -> GuestSchema:
-        """Get guest by telegram chat id.
+    async def get_by_guest_id(self, guest_id: int) -> GuestSchema:
+        """Get guest record by id.
 
-        :param chat_id: Telegram user chat id.
-        :return: Guest schema object.
+        :param guest_id: Guest identity.
+        :return: Guest schema.
         """
-        guest_orm = await self.__model.get(telegram_user__id=chat_id)
+        guest_orm = await self._model.get(guest_id=guest_id)
         return self._serialize_model(guest_orm)
 
     async def filter_by_phone_number(self, phone_number: str) -> GuestSchema | None:
-        """Get guest by telegram phone number.
+        """Get guest record by phone number.
 
         :param phone_number: Guest phone number.
         :return: Guest schema object if exists, None otherwise.
         """
-        guest_orm = await self.__model.get_or_none(phone_number=phone_number)
+        guest_orm = await self._model.get_or_none(phone_number=phone_number)
 
         if not guest_orm:
             return None
 
         return self._serialize_model(guest_orm)
-
-    async def update_status(
-        self,
-        guest_id: int,
-        status: GuestStatusEnum,
-    ) -> None:
-        """Update guest state.
-
-        :param guest_id: Guest id.
-        :param status: New Guest status.
-        :return: Guest schema object.
-        """
-        await self.__model.filter(id=guest_id).update(status=status)

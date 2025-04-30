@@ -2,10 +2,11 @@
 
 from pydantic import BaseModel
 
+from entities.enums.forms import GuestFormStageEnum
 
-class InvitationRequestSchema(BaseModel):
+
+class GuestFormSchema(BaseModel):
     """Invitation request schema."""
 
     guest_id: int
-    address: str
-    address_specification: str
+    stage: GuestFormStageEnum

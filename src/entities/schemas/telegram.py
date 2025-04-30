@@ -6,5 +6,5 @@ from pydantic import BaseModel
 class TelegramUserSchema(BaseModel):
     """Telegram user schema."""
 
-    id: int
+    user_id: int
     username: str

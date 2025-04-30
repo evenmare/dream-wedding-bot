@@ -4,14 +4,14 @@ from entities.database.telegram import TelegramUser
 from entities.schemas.telegram import TelegramUserSchema
 from repositories.database.base import BaseDatabaseRepository
 
-__all__ = ('TelegramUsersRepository',)
+__all__ = ('TelegramUserRepository',)
 
 
-class TelegramUsersRepository(BaseDatabaseRepository[TelegramUser, TelegramUserSchema]):
+class TelegramUserRepository(BaseDatabaseRepository[TelegramUser, TelegramUserSchema]):
     """Class implements repository for Telegram users."""
 
     schema = TelegramUserSchema
-    __model = TelegramUser
+    _model = TelegramUser
 
     async def update_or_create_by_guest_id(
         self,
@@ -24,7 +24,7 @@ class TelegramUsersRepository(BaseDatabaseRepository[TelegramUser, TelegramUserS
         :param telegram_user: Telegram user schema.
         :return: Telegram user schema of created record.
         """
-        user_orm, _ = await self.__model.update_or_create(
+        user_orm, _ = await self._model.update_or_create(
             guest_id=guest_id,
             defaults=telegram_user.model_dump(),
         )

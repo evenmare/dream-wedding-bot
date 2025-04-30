@@ -17,7 +17,7 @@ class BaseDatabaseRepository(abc.ABC, Generic[Model_, Schema]):
 
     @abc.abstractmethod
     @property
-    def __model(self) -> Model_:
+    def _model(self) -> Model_:
         """Returns the model that this repository represents."""
         raise NotImplementedError('model')
 
