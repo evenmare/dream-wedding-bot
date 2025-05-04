@@ -12,6 +12,6 @@ jobs:
     name: Lint
     runs-on: ubuntu-latest
     steps:
-    - uses: ./.github/workflows/prepare.yml
+    - uses: ./.github/actions/prepare
     - name: Lint
       run: ruff check src --no-fix
