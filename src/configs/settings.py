@@ -1,4 +1,5 @@
 """Module contains application settings."""
+
 from functools import lru_cache
 from pathlib import Path
 
@@ -39,8 +40,7 @@ class CacheSettings(BaseAppSettings):
     @computed_field
     @property
     def url(self) -> str:
-        return f'redis://{self.CACHE_USER}:{self.CACHE_PASSWORD}@' \
-               f'{self.CACHE_HOST}:{self.CACHE_PORT}/{self.CACHE_NAME}'
+        return f'redis://{self.CACHE_USER}:{self.CACHE_PASSWORD}@{self.CACHE_HOST}:{self.CACHE_PORT}/{self.CACHE_NAME}'
 
 
 class DbSettings(BaseAppSettings):
@@ -52,11 +52,27 @@ class DbSettings(BaseAppSettings):
     DB_USER: str = Field(alias='POSTGRES_USER')
     DB_PASSWORD: str = Field(alias='POSTGRES_PASSWORD')
 
-    @computed_field
     @property
     def url(self) -> str:
-        return f'asyncpg://{self.DB_USER}:{self.DB_PASSWORD}@' \
-               f'{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}'
+        """Database URL."""
+        return f'asyncpg://{self.DB_USER}:{self.DB_PASSWORD}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}'
+
+    @property
+    def app_name(self) -> str:
+        """App name for Tortoise."""
+        return 'dream_wedding_bot'
+
+    @property
+    def models(self) -> list[str]:
+        """Models list."""
+        return [
+            'entities.database.callback_messages',
+            'entities.database.telegram',
+            'entities.database.forms',
+            'entities.database.invitations',
+            'entities.database.guests',
+            'aerich.models',
+        ]
 
 
 @lru_cache
@@ -70,7 +86,7 @@ cache_settings: CacheSettings = get_cache_settings()
 
 @lru_cache
 def get_db_settings() -> DbSettings:
-    """"Retrieve database settings."""
+    """Retrieve database settings."""
     return DbSettings()
 
 
