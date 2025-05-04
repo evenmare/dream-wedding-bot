@@ -1,0 +1,17 @@
+name: Lint
+
+on:
+  workflow_call:
+  push:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+    - uses: ./.github/workflows/prepare.yml
+    - name: Lint
+      run: ruff check src --no-fix
