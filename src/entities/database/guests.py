@@ -10,7 +10,7 @@ class Guest(BaseOrmModel):
     """Guest model."""
 
     guest_id = fields.IntField(
-        pk=True,
+        primary_key=True,
         generated=True,
     )
 
@@ -29,6 +29,7 @@ class Guest(BaseOrmModel):
     phone_number = fields.CharField(
         max_length=12,
         null=False,
+        unique=True,
         db_index=True,
     )
     birth_date = fields.DateField()

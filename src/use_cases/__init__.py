@@ -1,1 +1,1 @@
-"""Module contains use cases implementations."""
+"""Module contains Use Cases implementations."""

@@ -9,14 +9,8 @@ TORTOISE_ORM = {
         'default': db_settings.url,
     },
     'apps': {
-        'dream_wedding_bot': {
-            'models': [
-                'entities.database.guests',
-                'entities.database.forms',
-                'entities.database.invitations',
-                'entities.database.telegram',
-                'aerich.models',
-            ],
+        db_settings.app_name: {
+            'models': db_settings.models,
             'default_connection': 'default',
         },
     },

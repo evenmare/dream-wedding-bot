@@ -1,5 +1,7 @@
 # Python-generated files
 __pycache__/
+.ruff_cache/
+.pytest_cache/
 *.py[oc]
 build/
 dist/
@@ -12,3 +14,4 @@ wheels/
 
 # IDE
 .idea/
+.vscode/

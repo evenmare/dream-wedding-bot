@@ -13,6 +13,7 @@ class GuestGenderEnum(str, enum.Enum):
 class GuestCategoryEnum(str, enum.Enum):
     """List of guest categories."""
 
+    NEWLYWEDS = 'newlyweds'
     RELATIVE = 'relative'
     FRIEND = 'friend'
     WITNESS = 'witness'

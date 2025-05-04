@@ -12,7 +12,7 @@ class InvitationRequest(BaseOrmModel):
         model_name='dream_wedding_bot.Guest',
         related_name='invitation_request',
         on_delete=fields.OnDelete.RESTRICT,
-        pk=True,
+        primary_key=True,
     )
 
     address = fields.TextField(null=True)

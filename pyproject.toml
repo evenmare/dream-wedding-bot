@@ -6,9 +6,12 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "aerich[toml]>=0.8.2",
+    "aioboto3>=14.1.0",
     "aiogram>=3.19.0",
     "dependency-injector>=4.46.0",
+    "geopy>=2.4.1",
     "pydantic-settings>=2.8.1",
+    "pytelegrambotapi>=4.26.0",
     "tortoise-orm[asyncpg]>=0.24.2",
 ]
 
@@ -17,10 +20,21 @@ tortoise_orm = "infrastructures.database.TORTOISE_ORM"
 location = "./migrations"
 src_folder = "./src"
 
+[tool.ruff]
+src = ["src"]
+
 [tool.ruff.format]
 quote-style = "single"
+indent-style = "space"
+docstring-code-line-length = 120
 
 [dependency-groups]
 dev = [
     "pytest>=8.3.5",
+    "pytest-asyncio>=0.26.0",
 ]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+asyncio_mode = "auto"

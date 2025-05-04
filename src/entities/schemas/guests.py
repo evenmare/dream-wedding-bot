@@ -4,7 +4,7 @@ import datetime
 
 from pydantic import BaseModel
 
-from entities.enums.guests import GuestCategoryEnum
+from entities.enums.guests import GuestCategoryEnum, GuestGenderEnum
 
 
 class GuestSchema(BaseModel):
@@ -12,10 +12,10 @@ class GuestSchema(BaseModel):
 
     first_name: str
     last_name: str
-    patronymic: str
+    patronymic: str | None
     phone_number: str
     birth_date: datetime.date
-    gender: str
+    gender: GuestGenderEnum
     category: GuestCategoryEnum
     is_resident: bool
     is_registration_guest: bool

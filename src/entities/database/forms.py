@@ -13,13 +13,17 @@ class GuestForm(BaseOrmModel):
         model_name='dream_wedding_bot.Guest',
         related_name='form',
         on_delete=fields.OnDelete.RESTRICT,
-        pk=True,
+        primary_key=True,
     )
 
     stage = fields.CharEnumField(
         GuestFormStageEnum,
         max_length=32,
         null=False,
+    )
+    additional_info = fields.TextField(
+        max_length=512,
+        null=True,
     )
 
     class Meta:

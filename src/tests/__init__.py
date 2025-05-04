@@ -1,1 +1,1 @@
-"""Module contains tests of functionality."""
+"""Package contains tests of functionality."""
