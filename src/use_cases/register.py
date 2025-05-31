@@ -36,7 +36,11 @@ class RegistrationUseCase:
         :raises NotAuthenticatedException: If guest if not found.
         :return: Is registered?
         """
-        guest_schema = await self.__guest_repository.filter_by_phone_number(phone_number=phone_number)
+        for formatted_phone_number in (phone_number, f'+{phone_number}'):
+            guest_schema = await self.__guest_repository.filter_by_phone_number(phone_number=formatted_phone_number)
+            if guest_schema:
+                break
+
         if not guest_schema:
             raise NotAuthenticatedException()
 
