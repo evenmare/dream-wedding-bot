@@ -19,7 +19,7 @@ class GuestFormRepository(BaseDatabaseRepository[GuestForm, GuestFormSchema]):
     async def get_by_guest_id(self, guest_id: int) -> GuestFormSchema:
         """Filter form by guest id.
 
-        :param guest_id: Guest identity.
+        :param guest_id: Guest identificator.
         :raises ObjectNotFoundException: If guest form does not exist.
         :return: Guest schema.
         """

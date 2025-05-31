@@ -1,16 +1,16 @@
 """Module contains guest Enums."""
 
-import enum
+from enum import Enum
 
 
-class GuestGenderEnum(str, enum.Enum):
+class GuestGenderEnum(str, Enum):
     """List of guest genders."""
 
     FEMALE = 'F'
     MALE = 'M'
 
 
-class GuestCategoryEnum(str, enum.Enum):
+class GuestCategoryEnum(str, Enum):
     """List of guest categories."""
 
     NEWLYWEDS = 'newlyweds'

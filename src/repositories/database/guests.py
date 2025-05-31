@@ -21,7 +21,7 @@ class GuestRepository(BaseDatabaseRepository[Guest, GuestSchema]):
     async def get_by_guest_id(self, guest_id: int) -> GuestSchema:
         """Get guest record by id.
 
-        :param guest_id: Guest identity.
+        :param guest_id: Guest identificator.
         :raises ObjectNotFoundException: If guest not found.
         :return: Guest schema.
         """
@@ -37,7 +37,7 @@ class GuestRepository(BaseDatabaseRepository[Guest, GuestSchema]):
     async def get_by_telegram_user_id(self, user_id: int) -> GuestSchema:
         """Get guest record by telegram user id.
 
-        :param user_id: Telegram user identity.
+        :param user_id: Telegram user identificator.
         :raises ObjectNotFoundException: If guest not found.
         :return: Guest schema.
         """
@@ -50,17 +50,23 @@ class GuestRepository(BaseDatabaseRepository[Guest, GuestSchema]):
 
         return self._serialize_model(guest_orm)
 
-    async def filter_all_by_guests_id(
-        self, guests_ids: Sequence[int]
+    async def filter_all(
+        self,
+        guests_ids: Sequence[int] | None = None,
     ) -> AsyncGenerator[GuestSchema, None]:
         """Filter guests by guests ids.
 
         :param guests_ids: Sequence of guests ids.
         :return: Async generator of guests.
         """
-        guests_generator = aiter(self._model.filter(guest_id__in=guests_ids))
+        query = self._model.all()
 
-        async for guest_orm in guests_generator:
+        if guests_ids:
+            query = query.filter(guest_id__in=guests_ids)
+
+        guests_iterator = aiter(query)
+
+        async for guest_orm in guests_iterator:
             yield self._serialize_model(guest_orm)
 
     async def filter_by_phone_number(self, phone_number: str) -> GuestSchema | None:

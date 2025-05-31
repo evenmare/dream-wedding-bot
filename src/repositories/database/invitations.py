@@ -21,18 +21,18 @@ class InvitationRequestRepository(
     async def get_by_guest_id(self, guest_id: int) -> InvitationRequestSchema:
         """Get invitation request by guest_id.
 
-        :param guest_id: Guest identity.
+        :param guest_id: Guest identificator.
         :raises ObjectNotFoundException: If does not exist.
         :return: Invitation request schema.
         """
         try:
-            guest_orm = await self._model.get(guest_id=guest_id)
+            request_orm = await self._model.get(guest_id=guest_id)
         except DoesNotExist as exc:
             raise ObjectNotFoundException(
                 f'invitation request guest_id={guest_id}',
             ) from exc
 
-        return guest_orm
+        return self._serialize_model(request_orm)
 
     async def create(self, invitation_request: InvitationRequestSchema) -> None:
         """Creates a new invitation request record.

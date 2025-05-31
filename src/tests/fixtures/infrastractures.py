@@ -6,9 +6,9 @@ import pytest
 from tortoise import Tortoise
 from tortoise.contrib.test import _init_db, getDBConfig, truncate_all_models
 
-from configs.settings import get_db_settings
+from configs.infrastractures import DbConfig
 
-db_settings = get_db_settings()
+db_settings = DbConfig()
 
 
 @pytest.fixture(scope='session')

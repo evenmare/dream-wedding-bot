@@ -7,4 +7,4 @@ class TelegramUserSchema(BaseModel):
     """Telegram user schema."""
 
     user_id: int
-    username: str
+    username: str | None

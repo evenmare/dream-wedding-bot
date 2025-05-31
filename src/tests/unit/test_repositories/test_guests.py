@@ -91,7 +91,7 @@ async def test_filter_all_by_guests_ids(
 
     retrieved_guests_list: list[GuestSchema] = []
 
-    async for guest_orm in guest_repository.filter_all_by_guests_id(
+    async for guest_orm in guest_repository.filter_all(
         guests_ids=guests_ids
     ):
         retrieved_guests_list.append(guest_orm)

@@ -1,1 +1,1 @@
-"""Package contains applications implementations."""
+"""Package contains applications implementaions."""

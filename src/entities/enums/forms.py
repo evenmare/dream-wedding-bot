@@ -1,10 +1,10 @@
 """Module contains enums for invitations entities."""
 
-import enum
+from enum import Enum
 
 
-class GuestFormStageEnum(str, enum.Enum):
-    """List of paper invitation request stages."""
+class GuestFormStageEnum(str, Enum):
+    """List of guest form stages."""
 
     AWAITING_ANSWER = 'awaiting_answer'
     DECLINED = 'declined'
@@ -13,6 +13,5 @@ class GuestFormStageEnum(str, enum.Enum):
     INVITATION_GEOTAG_VALIDATION = 'invitation_geotag_validation'
     INVITATION_ADDRESS_TEXT_INPUT = 'invitation_address_text_input'
     INVITATION_INFO_SPECIFICATION = 'invitation_info_specification'
-    INVITATION_INFO_VALIDATION = 'invitation_info_validation'
     FILLING_ADDITIONAL_INFO = 'filling_additional_info'
     COMPLETED = 'completed'

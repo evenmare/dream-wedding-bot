@@ -33,13 +33,13 @@ class Guest(BaseOrmModel):
         db_index=True,
     )
     birth_date = fields.DateField()
-    gender = fields.CharEnumField(
-        GuestGenderEnum,
+    gender: GuestGenderEnum = fields.CharEnumField(
+        enum_type=GuestGenderEnum,
         max_length=1,
     )
 
-    category = fields.CharEnumField(
-        GuestCategoryEnum,
+    category: GuestCategoryEnum = fields.CharEnumField(
+        enum_type=GuestCategoryEnum,
         null=False,
     )
     is_resident = fields.BooleanField(

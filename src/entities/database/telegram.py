@@ -1,8 +1,12 @@
 """Module contains implementations of Telegram models."""
 
+from typing import TYPE_CHECKING
 from tortoise import fields
 
 from entities.database.base import BaseOrmModel
+
+if TYPE_CHECKING:
+    from entities.database.guests import Guest
 
 
 class TelegramUser(BaseOrmModel):
@@ -17,7 +21,7 @@ class TelegramUser(BaseOrmModel):
         null=True,
     )
 
-    guest = fields.OneToOneField(
+    guest: fields.OneToOneRelation['Guest'] = fields.OneToOneField(
         model_name='dream_wedding_bot.Guest',
         related_name='telegram_user',
         on_delete=fields.OnDelete.CASCADE,
