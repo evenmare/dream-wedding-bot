@@ -12,7 +12,7 @@ if TYPE_CHECKING:
 class TelegramUser(BaseOrmModel):
     """Telegram user model."""
 
-    user_id = fields.IntField(
+    user_id = fields.BigIntField(
         primary_key=True,
         generated=False,
     )
