@@ -3,20 +3,46 @@ name = "dream-wedding-bot"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.13"
 dependencies = [
     "aerich[toml]>=0.8.2",
+    "aioboto3>=14.1.0",
     "aiogram>=3.19.0",
+    "dependency-injector>=4.46.0",
+    "geopy>=2.4.1",
+    "jinja2>=3.1.6",
     "pydantic-settings>=2.8.1",
+    "pytelegrambotapi>=4.27.0",
     "tortoise-orm[asyncpg]>=0.24.2",
 ]
 
 [tool.aerich]
-tortoise_orm = "infrastructures.database.TORTOISE_ORM"
+tortoise_orm = "infrastructures.databases.TORTOISE_ORM"
 location = "./migrations"
 src_folder = "./src"
 
+[tool.ruff]
+src = ["src"]
+
+[tool.ruff.format]
+quote-style = "single"
+indent-style = "space"
+docstring-code-line-length = 120
+
 [dependency-groups]
 dev = [
-    "pytest>=8.3.5",
+    "types-aiobotocore[essential]>=2.22.0",
 ]
+test = [
+    "pytest>=8.3.5",
+    "pytest-asyncio>=0.26.0",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+markers = [
+    "webtest: test using external Web services"
+]
+asyncio_default_fixture_loop_scope = "session"
