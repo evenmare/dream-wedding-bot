@@ -26,6 +26,34 @@ services:
         condition: service_healthy
     command: "uv run __main__.py run-command -n sync-available-commands"
 
+  assign_notifications:
+    build:
+      context: ./
+      dockerfile: ./docker/Dockerfile
+    env_file:
+      - .env
+    networks:
+      - production_network
+    depends_on:
+      db:
+        condition: service_healthy
+    command: "uv run __main__.py run-command -n assign-public-notifications"
+
+  send_notification:
+    build:
+      context: ./
+      dockerfile: ./docker/Dockerfile
+    env_file:
+      - .env
+    networks:
+      - production_network
+    depends_on:
+      db:
+        condition: service_healthy
+      assign_notifications:
+        condition: service_completed_successfully
+    command: "uv run __main__.py run-command -n send-notification"
+
   migrations:
     build:
       context: ./

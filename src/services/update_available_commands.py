@@ -1,6 +1,6 @@
 """Module contains service for update commands for gueest."""
 
-from repositories.database.callbacks import CommandRepository
+from repositories.database.commands import CommandRepository
 
 
 class UpdateAvailableCommandsService:
@@ -16,7 +16,7 @@ class UpdateAvailableCommandsService:
     async def __call__(self, guests_ids: set[int]) -> None:
         """Synchronize guest's commands with public available commands list.
 
-        :param guest: Guest schema.
+        :param guests_ids: Identities of guests.
         """
         public_commands_ids = {
             command.command_id async for command in self.__command_repository.filter_available()
@@ -29,8 +29,9 @@ class UpdateAvailableCommandsService:
                 async for command in self.__command_repository.filter_available(guest_id=guest_id)
             }
 
+            commands_ids_to_assign = public_commands_ids - guest_commands_ids
             guest_id_command_id_pairs.extend(
-                [(guest_id, command_id) for command_id in public_commands_ids - guest_commands_ids]
+                [(guest_id, command_id) for command_id in commands_ids_to_assign]
             )
 
         await self.__command_repository.make_available_for_guests(frozenset(guest_id_command_id_pairs))

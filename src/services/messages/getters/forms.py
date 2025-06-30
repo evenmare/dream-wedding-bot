@@ -1,7 +1,6 @@
 """Module contains class for form response data getter."""
 
-
-from entities.schemas.callbacks import CommandSchema
+from entities.schemas.commands import CommandSchema
 from entities.schemas.forms import GuestFormSchema
 from exceptions.repositories import ObjectNotFoundException
 from exceptions.services import CallbackMessageNotFoundException

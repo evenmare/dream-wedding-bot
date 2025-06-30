@@ -4,7 +4,8 @@ from collections.abc import AsyncGenerator
 
 import pytest
 
-from entities.database.callbacks import AvailableCommand, CallbackMessage, Command
+from entities.database.callbacks import CallbackMessage
+from entities.database.commands import AvailableCommand, Command
 from entities.database.guests import Guest
 from entities.enums.entities import ContextEntityEnum
 from entities.enums.forms import GuestFormStageEnum

@@ -41,7 +41,6 @@ async def lifecycle(storage_repository: StorageRepository = Provide[Container.st
 @inject
 async def run_command(command_name: str) -> None:
     """Runs a command."""
-    # await init_db()
     await COMMANDS_MAPPING[command_name]()
 
 

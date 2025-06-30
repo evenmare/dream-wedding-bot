@@ -16,7 +16,7 @@ from applications.bot.context import request_guest, request_guest_form
 from applications.bot.services import ReplyMarkupFactory, SendMessageService
 from containers import Container
 from entities.enums.forms import GuestFormStageEnum
-from entities.schemas.callbacks import CommandSchema
+from entities.schemas.commands import CommandSchema
 from exceptions.repositories import ObjectNotFoundException
 from repositories.database.invitations import InvitationRequestRepository
 from typings.services import CoordinatesTuple

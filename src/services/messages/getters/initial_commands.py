@@ -1,7 +1,7 @@
 """Module contains initial command getter."""
 
 from entities.enums.initial_commands import InitialCommandEnum
-from entities.schemas.callbacks import CommandSchema
+from entities.schemas.commands import CommandSchema
 from exceptions.repositories import ObjectNotFoundException
 from exceptions.services import CallbackMessageNotFoundException
 from repositories.database.callbacks import CallbackMessageRepository

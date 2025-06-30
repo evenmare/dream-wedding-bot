@@ -4,7 +4,7 @@ from configs.base import BaseAppSettings
 
 
 class BotConfig(BaseAppSettings):
-    """Config for main bot."""
+    """Config for bot."""
 
     model_config = {
         **BaseAppSettings.model_config,
@@ -12,3 +12,14 @@ class BotConfig(BaseAppSettings):
     }
 
     TOKEN: str
+
+
+class MessageConfig(BaseAppSettings):
+    """Config for bot messages."""
+
+    model_config = {
+        **BaseAppSettings.model_computed_fields,
+        'env_prefix': 'BOT_MESSAGES_',
+    }
+
+    INLINE_KEYBOARD_ROW_WIDTH: int

@@ -1,7 +1,6 @@
 """Module contains class for command response data getter."""
 
-from entities.schemas.callbacks import CommandSchema
-from entities.schemas.forms import GuestFormSchema
+from entities.schemas.commands import CommandSchema
 from entities.schemas.guests import GuestSchema
 from exceptions.repositories import ObjectNotFoundException
 from exceptions.services import CallbackMessageNotFoundException
@@ -26,10 +25,10 @@ class CommandMessageDataGetter(
 
         :param guest_form: Guest form schema.
         :param command: Command schema.
-        :return: MessageSchema, list of CommandSchema.
+        :return: Message factory data.
         """
         try:
-            callback_message = await self._callback_message_repository.get_by_command(command_id=command.command_id)
+            callback_message = await self._callback_message_repository.get_by_command_id(command_id=command.command_id)
         except ObjectNotFoundException as exc:
             raise CallbackMessageNotFoundException from exc
 

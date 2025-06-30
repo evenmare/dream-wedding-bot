@@ -1,6 +1,7 @@
 """Module contains Use Case for forming response on command message."""
 
-from entities.schemas.callbacks import CommandSchema, MessageSchema
+from entities.schemas.commands import CommandSchema
+from entities.schemas.callbacks import MessageSchema
 from entities.schemas.forms import GuestFormSchema
 from entities.schemas.guests import GuestSchema
 from entities.schemas.invitations import InvitationRequestSchema

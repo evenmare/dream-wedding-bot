@@ -5,20 +5,24 @@ from aiobotocore.session import get_session
 from dependency_injector import containers, providers
 
 from applications.bot.services import ReplyMarkupFactory, SendMessageService
-from configs.applications import BotConfig
+from configs.applications import BotConfig, MessageConfig
 from configs.infrastractures import GeocoderConfig, StorageConfig
 from configs.repositories import StorageRepositoryConfig
 from configs.services import GetAddressByLocationServiceConfig, MessageFactoryServiceConfig
 from configs.use_cases import IdentifyCallbackQueryUseCaseConfig
 from infrastructures.geocoders import get_geocoder_client
 from infrastructures.storages import get_s3_client
-from repositories.database.callbacks import CallbackMessageRepository, CommandRepository
+from repositories.database.commands import CommandRepository
+from repositories.database.callbacks import CallbackMessageRepository
 from repositories.database.forms import GuestFormRepository
 from repositories.database.guests import GuestRepository
 from repositories.database.invitations import InvitationRequestRepository
+from repositories.database.notifications import NotificationRepository
 from repositories.database.telegram import TelegramUserRepository
 from repositories.storages import StorageRepository
+from services.assign_public_notifications import AssignPublicNotificationsService
 from services.messages.getters.initial_commands import InitialCommandDataGetter
+from services.messages.getters.notifications import NotificationMessageDataGetter
 from services.update_available_commands import UpdateAvailableCommandsService
 from services.get_address_by_location import GetAddressByLocationService
 from services.messages.factory import MessageFactoryService
@@ -27,15 +31,20 @@ from services.messages.getters.forms import FormMessageDataGetter
 from use_cases.authenticate import AuthenticationUseCase
 from use_cases.messages_handlers.requests.callback_queries import IdentifyCallbackQueryUseCase
 from use_cases.messages_handlers.requests.forms.additional_info_callback import HandleAdditionalInfoCallbackUseCase
-from use_cases.messages_handlers.requests.forms.address_specification_callback import HandleAddressSpecificationCallbackUseCase
+from use_cases.messages_handlers.requests.forms.address_specification_callback import (
+    HandleAddressSpecificationCallbackUseCase,
+)
 from use_cases.messages_handlers.requests.forms.address_input_callback import HandleAddressInputCallbackUseCase
 from use_cases.messages_handlers.requests.forms.awaiting_answer_callback import HandleAwaitingAnswerCallbackUseCase
 from use_cases.messages_handlers.requests.forms.geotag_validation_callback import HandleGeotagValidationCallbackUseCase
-from use_cases.messages_handlers.requests.forms.invitation_neediness_callback import HandleInvitationNeedinessCallbackUseCase
+from use_cases.messages_handlers.requests.forms.invitation_neediness_callback import (
+    HandleInvitationNeedinessCallbackUseCase,
+)
 from use_cases.messages_handlers.responses.commands import GetResponseMessageByCommandUseCase
 from use_cases.messages_handlers.responses.forms import GetResponseMessageByFormStageUseCase
 from use_cases.messages_handlers.responses.initial_commands import GetResponseMessageByInitialCommandUseCase
 from use_cases.register import RegistrationUseCase
+from use_cases.send_notifications import SendNotificationsUseCase
 
 
 class Container(containers.DeclarativeContainer):
@@ -70,6 +79,7 @@ class Container(containers.DeclarativeContainer):
     guest_repository = providers.Factory(GuestRepository)
     invitation_request_repository = providers.Factory(InvitationRequestRepository)
     telegram_user_repository = providers.Factory(TelegramUserRepository)
+    notification_repository = providers.Factory(NotificationRepository)
 
     # Services
     get_address_by_location_service_config = providers.Singleton(GetAddressByLocationServiceConfig)
@@ -94,6 +104,11 @@ class Container(containers.DeclarativeContainer):
         callback_message_repository=callback_message_repository,
         command_repository=command_repository,
     )
+    notification_message_data_getter = providers.Factory(
+        NotificationMessageDataGetter,
+        callback_message_repository=callback_message_repository,
+        command_repository=None,
+    )
 
     message_factory_service_config = providers.Singleton(MessageFactoryServiceConfig)
     message_factory_service = providers.Factory(
@@ -105,6 +120,10 @@ class Container(containers.DeclarativeContainer):
     update_available_commands_service = providers.Factory(
         UpdateAvailableCommandsService,
         command_repository=command_repository,
+    )
+    assign_public_notifications_service = providers.Factory(
+        AssignPublicNotificationsService,
+        notification_repository=notification_repository,
     )
 
     # Use Cases
@@ -175,7 +194,25 @@ class Container(containers.DeclarativeContainer):
 
     # Applications
     bot_config = providers.Singleton(BotConfig)
-    bot = providers.Singleton(AsyncTeleBot, token=bot_config().TOKEN)
+    bot_message_config = providers.Singleton(MessageConfig)
 
-    reply_markup_factory = providers.Factory(ReplyMarkupFactory)
+    bot = providers.Singleton(
+        AsyncTeleBot,
+        token=bot_config().TOKEN,
+    )
+
+    reply_markup_factory = providers.Factory(
+        ReplyMarkupFactory,
+        message_config=bot_message_config,
+    )
     send_message_service = providers.Factory(SendMessageService)
+
+    send_notifications_use_case = providers.Factory(
+        SendNotificationsUseCase,
+        telegram_user_repository=telegram_user_repository,
+        notification_repository=notification_repository,
+        message_getter_service=notification_message_data_getter,
+        message_factory_service=message_factory_service,
+        send_message_service=send_message_service,
+        bot=bot,
+    )

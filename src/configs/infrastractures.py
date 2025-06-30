@@ -28,7 +28,9 @@ class DbConfig(BaseAppSettings):
     def models(self) -> list[str]:
         """Models list."""
         return [
+            'entities.database.commands',
             'entities.database.callbacks',
+            'entities.database.notifications',
             'entities.database.telegram',
             'entities.database.forms',
             'entities.database.invitations',

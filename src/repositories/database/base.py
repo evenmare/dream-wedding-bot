@@ -3,7 +3,7 @@
 import abc
 from typing import Generic
 
-from typings.repositories import Model_, Schema
+from typings.repositories import ManyToManyModel, Model_, Schema
 
 
 class BaseDatabaseRepository(abc.ABC, Generic[Model_, Schema]):
@@ -19,7 +19,7 @@ class BaseDatabaseRepository(abc.ABC, Generic[Model_, Schema]):
     @abc.abstractmethod
     def _model(self) -> Model_:
         """Returns the model that this repository represents."""
-        raise NotImplementedError('model')
+        raise NotImplementedError('_model')
 
     def _serialize_model(self, obj_orm: Model_) -> Schema:
         """Method implements logic for serializing a model record."""
@@ -27,3 +27,16 @@ class BaseDatabaseRepository(abc.ABC, Generic[Model_, Schema]):
             obj_orm,
             from_attributes=True,
         )
+
+
+class BaseManyToManyRepository(
+    BaseDatabaseRepository[Model_, Schema],
+    abc.ABC,
+    Generic[Model_, ManyToManyModel, Schema],
+):
+    """Implements base logic for many2many repositories."""
+
+    @property
+    def _m2m_model(self) -> ManyToManyModel:
+        """Returns the model that this repository uses for relations."""
+        raise NotImplementedError('_m2m_model')

@@ -1,7 +1,7 @@
 """Module contains handler for INVITATION_NEEDINESS form stage."""
 
 from entities.enums.forms import GuestFormStageEnum
-from entities.schemas.callbacks import CommandSchema
+from entities.schemas.commands import CommandSchema
 from entities.schemas.forms import GuestFormSchema
 from entities.schemas.invitations import InvitationRequestSchema
 from repositories.database.forms import GuestFormRepository

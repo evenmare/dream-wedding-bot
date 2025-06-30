@@ -1,7 +1,7 @@
 """Module contains handler for AWAITING_ANSWER form stage."""
 
 from entities.enums.forms import GuestFormStageEnum
-from entities.schemas.callbacks import CommandSchema
+from entities.schemas.commands import CommandSchema
 from entities.schemas.forms import GuestFormSchema
 from repositories.database.forms import GuestFormRepository
 from typings.use_cases import GuestInfoDataTuple

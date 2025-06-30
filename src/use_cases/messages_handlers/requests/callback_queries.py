@@ -1,11 +1,11 @@
 """Module contains Use Case for callback query processing."""
 
 from configs.use_cases import IdentifyCallbackQueryUseCaseConfig
-from entities.schemas.callbacks import CommandSchema
+from entities.schemas.commands import CommandSchema
 from entities.schemas.guests import GuestSchema
 from exceptions.repositories import ObjectNotFoundException
 from exceptions.use_cases import CommandNotFoundException
-from repositories.database.callbacks import CommandRepository
+from repositories.database.commands import CommandRepository
 
 
 class IdentifyCallbackQueryUseCase:

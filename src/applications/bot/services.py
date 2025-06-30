@@ -15,14 +15,21 @@ from telebot.types import (
     ReplyKeyboardRemove,
 )
 
-from entities.schemas.callbacks import CommandSchema
+from configs.applications import MessageConfig
+from entities.schemas.commands import CommandSchema
 
 
 class ReplyMarkupFactory:
     """Factory of reply markup."""
 
-    @staticmethod
-    def make_inline_keyboard(keyboard_buttons: list[CommandSchema[str]]) -> InlineKeyboardMarkup | None:
+    def __init__(self, message_config: MessageConfig) -> None:
+        """Class constructor.
+
+        :param message_config: Config for bot messages.
+        """
+        self._message_config = message_config
+
+    def make_inline_keyboard(self, keyboard_buttons: list[CommandSchema[str]]) -> InlineKeyboardMarkup | None:
         """Make inline keyboard.
 
         :param keyboard_buttons: List of available commands.
@@ -30,7 +37,7 @@ class ReplyMarkupFactory:
         """
         reply_markup = None
         if keyboard_buttons:
-            reply_markup = InlineKeyboardMarkup(row_width=1)
+            reply_markup = InlineKeyboardMarkup(row_width=self._message_config.INLINE_KEYBOARD_ROW_WIDTH)
             reply_markup.add(
                 *[
                     InlineKeyboardButton(
@@ -48,6 +55,37 @@ class SendMessageService:
     """Service implements sending message logic."""
 
     __bot: AsyncTeleBot
+
+    async def send(
+        self,
+        chat_id: int,
+        *,
+        text: str,
+        image_url: str | None = None,
+        reply_markup: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | None = None,
+    ) -> Message:
+        """Send message.
+
+        :param text: Test of message.
+        :param image_url: Image url if provided, defaults to None
+        :param reply_markup: Reply markup if provided, defaults to None
+        :return: Sent message.
+        """
+        if image_url:
+            return await self.__bot.send_photo(
+                chat_id=chat_id,
+                photo=image_url,
+                caption=text,
+                reply_markup=reply_markup,
+                parse_mode='html',
+            )
+
+        return await self.__bot.send_message(
+            chat_id=chat_id,
+            text=text,
+            reply_markup=reply_markup,
+            parse_mode='html',
+        )
 
     async def reply(
         self,

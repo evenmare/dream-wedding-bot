@@ -6,7 +6,8 @@ import jinja2
 
 from configs.services import MessageFactoryServiceConfig
 from entities.enums.entities import ContextEntityEnum
-from entities.schemas.callbacks import CommandSchema, MessageSchema
+from entities.schemas.commands import CommandSchema
+from entities.schemas.callbacks import MessageSchema
 from entities.schemas.forms import GuestFormSchema
 from entities.schemas.guests import GuestSchema
 from entities.schemas.invitations import InvitationRequestSchema

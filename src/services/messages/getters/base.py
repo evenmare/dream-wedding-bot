@@ -2,9 +2,9 @@
 
 import abc
 
-from entities.schemas.callbacks import CommandSchema
-from entities.schemas.forms import GuestFormSchema
-from repositories.database.callbacks import CallbackMessageRepository, CommandRepository
+from entities.schemas.commands import CommandSchema
+from repositories.database.commands import CommandRepository
+from repositories.database.callbacks import CallbackMessageRepository
 from typings.services import MessageFactoryDataTuple
 
 

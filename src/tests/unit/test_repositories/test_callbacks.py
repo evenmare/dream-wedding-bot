@@ -2,11 +2,14 @@
 
 import pytest
 
-from entities.database.callbacks import AvailableCommand, CallbackMessage, Command
+from entities.database.callbacks import CallbackMessage
+from entities.database.commands import AvailableCommand, Command
 from entities.database.guests import Guest
 from entities.enums.forms import GuestFormStageEnum
-from entities.schemas.callbacks import CommandSchema, MessageReferenceSchema
-from repositories.database.callbacks import CallbackMessageRepository, CommandRepository
+from entities.schemas.commands import CommandSchema
+from entities.schemas.callbacks import MessageReferenceSchema
+from repositories.database.commands import CommandRepository
+from repositories.database.callbacks import CallbackMessageRepository
 
 
 pytestmark = pytest.mark.usefixtures(
@@ -97,7 +100,7 @@ async def test_get_callback_by_command(callback_messages: list[CallbackMessage])
     callback_message_repository = CallbackMessageRepository()
 
     callback_message_orm = callback_messages[1]
-    callback_message_schema = await callback_message_repository.get_by_command(
+    callback_message_schema = await callback_message_repository.get_by_command_id(
         command_id=callback_messages[1].command_id,
     )
 
@@ -107,7 +110,7 @@ async def test_get_callback_by_command(callback_messages: list[CallbackMessage])
 async def test_get_callback_by_command__not_found():
     """Validate retrieve callback message by command if does not exist."""
     callback_message_repository = CallbackMessageRepository()
-    assert not await callback_message_repository.get_by_command(command_id=-1)
+    assert not await callback_message_repository.get_by_command_id(command_id=-1)
 
 
 async def test_get_callback_by_form_stage(callback_messages: list[CallbackMessage]):

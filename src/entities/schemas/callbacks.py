@@ -2,16 +2,8 @@
 
 from pydantic import BaseModel, Field
 
+from entities.schemas.commands import CommandSchema
 from typings.services import RequiredMessageContextDict
-
-
-class CommandSchema[CodeType = str | None](BaseModel):
-    """Command schema."""
-
-    command_id: int
-    text: str
-    code: CodeType
-    is_negative_feedback: bool
 
 
 class MessageReferenceSchema(BaseModel):

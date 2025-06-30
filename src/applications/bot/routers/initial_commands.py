@@ -71,9 +71,7 @@ async def request_contact(
     initial_command = InitialCommandEnum.REQUEST_CONTACT
     response_message_schema: MessageSchema = await use_case(initial_command=initial_command)
 
-    if not response_message_schema.keyboard_buttons:
-        raise ValueError('keyboard buttons')  # TODO
-    if len(response_message_schema.keyboard_buttons) > 1:
+    if not response_message_schema.keyboard_buttons or len(response_message_schema.keyboard_buttons) > 1:
         raise ValueError('keyboard buttons')  # TODO
 
     reply_markup = ReplyKeyboardMarkup(row_width=1, one_time_keyboard=True)
