@@ -1,24 +1,26 @@
 """Module contains implementations of guest models."""
 
 from tortoise import fields
-from tortoise.validators import MinLengthValidator
 
 from entities.database.base import BaseOrmModel
-from entities.enums.guests import GuestCategoryEnum, GuestStatusEnum
+from entities.enums.guests import GuestCategoryEnum, GuestGenderEnum
 
 
 class Guest(BaseOrmModel):
     """Guest model."""
 
+    guest_id = fields.IntField(
+        primary_key=True,
+        generated=True,
+    )
+
     first_name = fields.CharField(
         max_length=16,
         null=False,
-        validators=[MinLengthValidator(2)],
     )
     last_name = fields.CharField(
         max_length=32,
         null=False,
-        validators=[MinLengthValidator(2)],
     )
     patronymic = fields.CharField(
         max_length=32,
@@ -27,13 +29,17 @@ class Guest(BaseOrmModel):
     phone_number = fields.CharField(
         max_length=12,
         null=False,
-        validators=[MinLengthValidator(11)],
+        unique=True,
         db_index=True,
     )
     birth_date = fields.DateField()
+    gender: GuestGenderEnum = fields.CharEnumField(
+        enum_type=GuestGenderEnum,
+        max_length=1,
+    )
 
-    category = fields.CharEnumField(
-        GuestCategoryEnum,
+    category: GuestCategoryEnum = fields.CharEnumField(
+        enum_type=GuestCategoryEnum,
         null=False,
     )
     is_resident = fields.BooleanField(
@@ -45,11 +51,5 @@ class Guest(BaseOrmModel):
         null=False,
     )
 
-    status = fields.CharEnumField(
-        GuestStatusEnum,
-        null=True,
-        max_length=16,
-    )
-
     class Meta:
-        table = "guests"
+        table = 'guests'
