@@ -22,4 +22,6 @@ prepare_env:
 	cp .env.example .env
 
 init: prepare_env update_venv run_infrastructures migrate
+	uv tool install pre-commit
+	uv tool install ruff
 	uvx pre-commit install
